@@ -180,15 +180,26 @@ export const Navigation = ({ cartCount, currentPage, onPageChange, onCartClick }
                 </Button>
               </Button.Group>
             ) : (
-              <Button
-                type="text"
-                onClick={() => handleModalOpen((open) => setIsAdminLoginOpen(open))}
-                onKeyDown={(e) => handleKeyDown(e, () => handleModalOpen((open) => setIsAdminLoginOpen(open)))}
-                className="text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                aria-label="Admin login"
-                icon={<FontAwesomeIcon icon={faUser} />}
-                tabIndex={0}
-              />
+              <div className="flex items-center space-x-2">
+                <Button
+                  onClick={() => onPageChange('register')}
+                  className="bg-green-500 text-white hover:bg-green-600 focus:ring-2 focus:ring-green-500"
+                  aria-label="Register new account"
+                >
+                  Register
+                </Button>
+                <Button
+                  type="text"
+                  onClick={() => handleModalOpen((open) => setIsAdminLoginOpen(open))}
+                  onKeyDown={(e) => handleKeyDown(e, () => handleModalOpen((open) => setIsAdminLoginOpen(open)))}
+                  className="text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  aria-label="Login"
+                  icon={<FontAwesomeIcon icon={faUser} />}
+                  tabIndex={0}
+                >
+                  Login
+                </Button>
+              </div>
             )}
           </div>
         </div>

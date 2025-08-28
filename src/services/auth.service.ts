@@ -8,7 +8,51 @@ export interface LoginCredentials {
   password: string
 }
 
+export interface RegisterData {
+  username: string
+  email: string
+  password: string
+  phone: string
+  dateOfBirth: Date
+}
+
 class AuthService {
+  async register(data: RegisterData): Promise<void> {
+    try {
+      // Convert the date to ISO string for consistent format
+      const formattedData = {
+        ...data,
+        dateOfBirth: data.dateOfBirth.toISOString()
+      }
+      
+      const response = await axios.post(`${API_BASE_URL}/auth/register`, formattedData)
+      return response.data
+    } catch (error: any) {
+      console.error('Registration failed:', error)
+      if (error.response?.status === 409) {
+        throw new Error('Username or email already exists')
+      }
+      throw new Error(error.response?.data?.message || 'Registration failed')
+    }
+  }
+
+  async verifyEmail(token: string): Promise<void> {
+    try {
+      await axios.post(`${API_BASE_URL}/auth/verify-email`, { token })
+    } catch (error: any) {
+      console.error('Email verification failed:', error)
+      throw new Error('Email verification failed')
+    }
+  }
+
+  async resendVerificationEmail(email: string): Promise<void> {
+    try {
+      await axios.post(`${API_BASE_URL}/auth/resend-verification`, { email })
+    } catch (error: any) {
+      console.error('Failed to resend verification email:', error)
+      throw new Error('Failed to resend verification email')
+    }
+  }
   async login(credentials: LoginCredentials): Promise<User> {
     try {
       const response = await axios.post(`${API_BASE_URL}/auth/login`, credentials)

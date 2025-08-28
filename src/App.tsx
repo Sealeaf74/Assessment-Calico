@@ -7,6 +7,7 @@ import { Community } from './components/Community'
 import { Newsletter } from './components/Newsletter'
 import { Footer } from './components/Footer'
 import { Shop } from './components/Shop'
+import { Register } from './components/Register'
 import { StaffPortal } from './components/staff/StaffPortal'
 import ErrorBoundary from './components/ErrorBoundary'
 import { LoadingSpinner } from './components/LoadingSpinner'
@@ -19,36 +20,6 @@ function App() {
   const [cartItems, setCartItems] = useState<CartItem[]>([])
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-
-  const renderContent = () => {
-    switch (currentPage) {
-      case 'shop':
-        return (
-          <ErrorBoundary>
-            <Shop onAddToCart={handleAddToCart} />
-          </ErrorBoundary>
-        )
-      case 'staff':
-        return (
-          <ErrorBoundary>
-            <ProtectedRoute>
-              <StaffPortal />
-            </ProtectedRoute>
-          </ErrorBoundary>
-        )
-      case 'home':
-      default:
-        return (
-          <>
-            <Hero onShopClick={() => handlePageChange('shop')} />
-            <Collections />
-            <HowItWorks />
-            <Community />
-            <Newsletter />
-          </>
-        )
-    }
-  }
 
   const handlePageChange = (page: PageType) => {
     setIsLoading(true)
@@ -63,12 +34,12 @@ function App() {
     setIsCartOpen(true)
   }
 
-  const handleAddToCart = (productId: string, quantity: number, product: Product) => {
-    const existingItem = cartItems.find(item => item.id === productId)
+  const handleAddToCart = (product: Product, quantity: number = 1) => {
+    const existingItem = cartItems.find(item => item.id === product.id)
     
     if (existingItem) {
       setCartItems(prev => prev.map(item => 
-        item.id === productId 
+        item.id === product.id 
           ? { ...item, quantity: item.quantity + quantity }
           : item
       ))
@@ -78,9 +49,7 @@ function App() {
         name: product.name,
         price: product.price,
         quantity,
-        image: product.image,
-        color: product.colors[0],
-        weight: product.weight
+        image: product.image
       }])
     }
     setIsCartOpen(true)
@@ -139,6 +108,8 @@ function App() {
             </div>
           </div>
         )
+      case 'register':
+        return <Register />
       default:
         return <div>Page under construction</div>
     }

@@ -47,7 +47,7 @@ export interface Step {
   description: string
 }
 
-export type PageType = 'home' | 'shop' | 'collections' | 'about' | 'contact' | 'staff';
+export type PageType = 'home' | 'shop' | 'collections' | 'about' | 'contact' | 'staff' | 'register';
 
 export interface SocialLink {
   id: string

@@ -27,7 +27,7 @@ interface Product {
 }
 
 interface ShopProps {
-  onAddToCart?: (productId: string, quantity: number, product: Product) => void
+  onAddToCart?: (product: Product, quantity?: number) => void
 }
 
 export const Shop = ({ onAddToCart }: ShopProps) => {
@@ -174,10 +174,10 @@ export const Shop = ({ onAddToCart }: ShopProps) => {
     setFilteredProducts(filtered)
   }, [products, searchTerm, selectedCategory, selectedMaterial, priceRange, sortBy])
 
-  const handleAddToCart = (productId: string, quantity: number) => {
+  const handleAddToCart = (productId: string, quantity: number = 1) => {
     const product = products.find(p => p.id === productId)
     if (product && onAddToCart) {
-      onAddToCart(productId, quantity, product)
+      onAddToCart(product, quantity)
       message.success(`${product.name} added to cart!`)
     }
   }
